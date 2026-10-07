@@ -1,0 +1,49 @@
+1 
+SELECT * FROM Student WHERE city = 'Москва';
+2 
+SELECT full_name, group_name FROM Student WHERE birth_year > 2004;
+3
+SELECT * FROM Course WHERE credits >= 4 OR credits = 2;
+4
+SELECT S.full_name, C.title, G.score
+FROM Student S
+JOIN Grade G ON S.student_id = G.student_id
+JOIN Course C ON C.course_id = G.course_id
+WHERE G.score >= 85;
+5 
+SELECT C.title, T.full_name
+FROM Course C
+JOIN Teacher T ON C.teacher_id = T.teacher_id
+WHERE T.department = 'Информатика';
+6
+SELECT S1.full_name, S2.full_name
+FROM Student S1
+JOIN Student S2 ON S1.city = S2.city AND S1.student_id < S2.student_id;
+7
+SELECT student_id FROM Grade WHERE course_id = 1
+UNION
+SELECT student_id FROM Grade WHERE course_id = 2;
+8
+SELECT student_id FROM Grade WHERE course_id = 1
+INTERSECT
+SELECT student_id FROM Grade WHERE course_id = 2;
+9
+SELECT student_id FROM Student
+EXCEPT
+SELECT student_id FROM Grade;
+10 
+SELECT course_id, AVG(score) AS avg_score
+FROM Grade
+GROUP BY course_id;
+11
+SELECT C.title, AVG(G.score) AS avg_score
+FROM Grade G
+JOIN Course C ON C.course_id = G.course_id
+GROUP BY C.course_id, C.title
+HAVING AVG(G.score) > 75;
+12
+SELECT student_id
+FROM Grade
+WHERE course_id IN (SELECT course_id FROM Course WHERE credits >= 5)
+GROUP BY student_id
+HAVING COUNT(DISTINCT course_id) = (SELECT COUNT(*) FROM Course WHERE credits >= 5);
